@@ -214,11 +214,19 @@ public class CliBankingApp{
                     }while(true);
 
                     System.out.printf("2%s of transfer amount will be deduct from From account ","%");
+                    double x = userAccountBal[indexToSearchFrom];
+                    x = (x-amount1) -(x/100*2);
+                    System.out.println("New balance of From account : " + x);
 
                     userAccountBal[indexToSearchTo]+=amount1;
                     System.out.println("New balance of To account : " + (userAccountBal[indexToSearchTo]));
 
-                    System.out.println();
+                    System.out.print("\tDo you want to continue  (Y/n)? ");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;
+
+                case CHECK_ACCOUNT_BALANCE:
 
             }       
                 
