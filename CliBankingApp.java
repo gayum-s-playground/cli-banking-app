@@ -170,6 +170,10 @@ public class CliBankingApp{
                     screen = DASHBOARD;
                     break;
 
+                case WITHDRAWALS:
+
+                    
+
             }       
                 
         }while(true);
