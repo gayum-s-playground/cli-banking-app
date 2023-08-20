@@ -228,6 +228,22 @@ public class CliBankingApp{
 
                 case CHECK_ACCOUNT_BALANCE:
 
+                    //A/C number validation
+                    indexToSearch = accountNumberValidation(ERROR_MSG, userDetails,"");
+
+                    System.out.println("Account name : " + userDetails[indexToSearch][1]);
+                    System.out.println("Current Account balance : " + userAccountBal[indexToSearch]);
+                    if(userAccountBal[indexToSearch]-500>500){
+                        System.out.println("Available balance for withdraw : " + (userAccountBal[indexToSearch]-500));
+                    }else{
+                        System.out.printf(ERROR_MSG,"Withdraw can't be done from this account!");
+                    }
+
+                    System.out.print("\tDo you want to continue  (Y/n)? ");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;
+
             }       
                 
         }while(true);
