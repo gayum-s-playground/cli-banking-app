@@ -1,4 +1,4 @@
-//import java.util.Arrays;
+import java.util.Arrays;
 import java.util.Scanner;
 public class CliBankingApp{
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -27,6 +27,7 @@ public class CliBankingApp{
         String[][] userDetails = new String[0][2];
         double[] userAccountBal = new double[0];
         int generateIndex =1;
+        int indexToSearch=0;
 
         
         do{
@@ -102,9 +103,9 @@ public class CliBankingApp{
 
 
 
-                    // for (int i = 0; i < userDetails.length; i++) {
-                    //     System.out.println(Arrays.toString(userDetails[i]));
-                    // }                    
+                    for (int i = 0; i < userDetails.length; i++) {
+                        System.out.println(Arrays.toString(userDetails[i]));
+                    }                    
 
                     boolean balance = true;
                     double initialDipo;
@@ -142,13 +143,72 @@ public class CliBankingApp{
                     break;
 
                 case DEPOSITE:
+                    
+                    //A/C number validation
+                    indexToSearch = accountNumberValidation(ERROR_MSG, userDetails);
+                    //System.out.println(indexToSearch);
+                    System.out.printf("CurrentBalance : Rs %,.2f\n",userAccountBal[indexToSearch]);
+                    double amount=0;
+                    do{
+                        System.out.print("Enter Deposite amount : ");
+                        amount = SCANNER.nextDouble();
+                        SCANNER.nextLine();
+                        if(amount<500){
+                            System.out.printf(ERROR_MSG,"Insufficent amount for deposite..Minimum Deposite amount is Rs 500.00/=");
+                            continue;
+                        }else{
+                            break;
+                        }
+                    }while(true);
 
-                    System.out.print("Enter Account Number : ");
-
+                    userAccountBal[indexToSearch]+=amount;
+                    
+                    System.out.printf("New balance : Rs %,.2f\n",userAccountBal[indexToSearch]);
+                    
+                    System.out.print("\tDo you want to continue  (Y/n)? ");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;
 
             }       
                 
         }while(true);
 
+    }
+
+    public static int accountNumberValidation(String ERROR_MSG,String[][] userDetailStrings){
+        int index = -1;
+        boolean validation = true;
+        String errorMsg = ERROR_MSG;
+        String[][] details = userDetailStrings;
+
+        
+        do{
+            System.out.print("Enter Account Number : ");
+            String accountNumber = SCANNER.nextLine().strip();
+            if(accountNumber.isBlank()){
+                System.out.printf(ERROR_MSG, "Account number can't be empty!");
+                validation=false;
+                continue;
+            }
+            if(!accountNumber.startsWith("SDB-") || accountNumber.length()!= 9){
+                System.out.printf(errorMsg,"Invalied Format!");
+                validation=false;
+                continue;
+            }
+            for (int i = 0; i < details.length; i++) {
+                String id = details[i][0];
+                if (accountNumber.equals(id)) {
+                    index=i;
+                    validation = true;
+                    break;
+                }
+            }
+            if(index==-1){
+                System.out.printf(errorMsg,"Account number not found!");
+            }
+
+        }while(!validation);
+        return index;
     }
 }
