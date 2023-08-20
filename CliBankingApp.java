@@ -148,19 +148,8 @@ public class CliBankingApp{
                     indexToSearch = accountNumberValidation(ERROR_MSG, userDetails);
                     //System.out.println(indexToSearch);
                     System.out.printf("CurrentBalance : Rs %,.2f\n",userAccountBal[indexToSearch]);
-                    double amount=0;
-                    do{
-                        System.out.print("Enter Deposite amount : ");
-                        amount = SCANNER.nextDouble();
-                        SCANNER.nextLine();
-                        if(amount<500){
-                            System.out.printf(ERROR_MSG,"Insufficent amount for deposite..Minimum Deposite amount is Rs 500.00/=");
-                            continue;
-                        }else{
-                            break;
-                        }
-                    }while(true);
-
+                    //check Diposite amount
+                    double amount=validateDepositeAmount(userAccountBal, indexToSearch, ERROR_MSG);
                     userAccountBal[indexToSearch]+=amount;
                     
                     System.out.printf("New balance : Rs %,.2f\n",userAccountBal[indexToSearch]);
@@ -172,7 +161,21 @@ public class CliBankingApp{
 
                 case WITHDRAWALS:
 
+                    //A/C number validation
+                    indexToSearch = accountNumberValidation(ERROR_MSG, userDetails);
+
+                    System.out.printf("CurrentBalance : Rs %,.2f\n",userAccountBal[indexToSearch]);
+                    amount=validateWithdrawalAmount(userAccountBal, indexToSearch, ERROR_MSG);
+
+                    userAccountBal[indexToSearch]-=amount;
                     
+                    
+                    System.out.printf("New balance : Rs %,.2f\n",userAccountBal[indexToSearch]);
+                    
+                    System.out.print("\tDo you want to continue  (Y/n)? ");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;
 
             }       
                 
@@ -214,5 +217,42 @@ public class CliBankingApp{
 
         }while(!validation);
         return index;
+    }
+
+    public static double validateDepositeAmount(double[] userAccountBal,int indexToSearch,String ERROR_MSG){
+        double amount=0;
+        do{
+            System.out.print("Enter Deposite amount : ");
+            amount = SCANNER.nextDouble();
+            SCANNER.nextLine();
+            if(amount<500){
+                System.out.printf(ERROR_MSG,"Insufficent amount for deposite..Minimum Deposite amount is Rs 500.00/=");
+                continue;
+            }else{
+                break;
+            }
+        }while(true);
+        return amount;
+    }
+
+    public static double validateWithdrawalAmount(double[] userAccountBal,int indexToSearch,String ERROR_MSG){
+        double amount=0;
+        do{
+            System.out.print("Enter Withdrawal amount : ");
+            amount = SCANNER.nextDouble();
+            SCANNER.nextLine();
+            if(amount<100){
+                System.out.printf(ERROR_MSG,"Insufficent amount for withdraw..Minimum Withdraw amount is Rs 100.00/=");
+                continue;
+            }else if(userAccountBal[indexToSearch]-amount<500){
+                System.out.printf(ERROR_MSG,"Insufficient balance for withdraw"); 
+                continue;
+            }else{
+                break;
+            }
+            
+        }while(true);
+        
+        return amount;
     }
 }
