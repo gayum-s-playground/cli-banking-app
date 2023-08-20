@@ -145,7 +145,7 @@ public class CliBankingApp{
                 case DEPOSITE:
                     
                     //A/C number validation
-                    indexToSearch = accountNumberValidation(ERROR_MSG, userDetails);
+                    indexToSearch = accountNumberValidation(ERROR_MSG, userDetails,"");
                     //System.out.println(indexToSearch);
                     System.out.printf("CurrentBalance : Rs %,.2f\n",userAccountBal[indexToSearch]);
                     //check Diposite amount
@@ -162,7 +162,7 @@ public class CliBankingApp{
                 case WITHDRAWALS:
 
                     //A/C number validation
-                    indexToSearch = accountNumberValidation(ERROR_MSG, userDetails);
+                    indexToSearch = accountNumberValidation(ERROR_MSG, userDetails,"");
 
                     System.out.printf("CurrentBalance : Rs %,.2f\n",userAccountBal[indexToSearch]);
                     amount=validateWithdrawalAmount(userAccountBal, indexToSearch, ERROR_MSG);
@@ -177,13 +177,56 @@ public class CliBankingApp{
                     screen = DASHBOARD;
                     break;
 
+                case TRANSFER:
+                    //A/c check for from
+                    int indexToSearchFrom = accountNumberValidation(ERROR_MSG, userDetails, "From ");
+
+                    //A/c check for to
+                    int indexToSearchTo;
+                    do{
+                        indexToSearchTo = accountNumberValidation(ERROR_MSG, userDetails, "To ");
+                        if(indexToSearchFrom!=indexToSearchTo){
+                            break;
+                        }
+                    }while(true);
+
+                    System.out.printf("Account name : %s \n",userDetails[indexToSearchFrom][1]);
+                    System.out.printf("From A/c balance : %,.2f\n",userAccountBal[indexToSearchFrom]);
+
+                    System.out.printf("Account name : %s \n",userDetails[indexToSearchTo][1]);
+                    System.out.printf("To A/c balance : %,.2f\n",userAccountBal[indexToSearchTo]);
+                    double amount1;
+                    
+                    do{
+                        System.out.print("Enter amount : ");
+                        amount1 = SCANNER.nextDouble();
+                        SCANNER.nextLine();
+                        if(amount1<100){
+                            System.out.printf(ERROR_MSG,"Insufficent balance for transfer..Minimum tranfer amount is Rs 100.00/=");
+                            continue;
+                        }else if(userAccountBal[indexToSearchFrom]-amount1<500){
+                            System.out.printf(ERROR_MSG,"Insuffiecent amount in From account");
+                            continue;
+                        }else{
+                            break;
+                        }
+
+                    }while(true);
+
+                    System.out.printf("2%s of transfer amount will be deduct from From account ","%");
+
+                    userAccountBal[indexToSearchTo]+=amount1;
+                    System.out.println("New balance of To account : " + (userAccountBal[indexToSearchTo]));
+
+                    System.out.println();
+
             }       
                 
         }while(true);
 
     }
 
-    public static int accountNumberValidation(String ERROR_MSG,String[][] userDetailStrings){
+    public static int accountNumberValidation(String ERROR_MSG,String[][] userDetailStrings,String txt){
         int index = -1;
         boolean validation = true;
         String errorMsg = ERROR_MSG;
@@ -191,7 +234,7 @@ public class CliBankingApp{
 
         
         do{
-            System.out.print("Enter Account Number : ");
+            System.out.printf("Enter %sAccount Number : ",txt);
             String accountNumber = SCANNER.nextLine().strip();
             if(accountNumber.isBlank()){
                 System.out.printf(ERROR_MSG, "Account number can't be empty!");
@@ -255,4 +298,6 @@ public class CliBankingApp{
         
         return amount;
     }
+
+
 }
