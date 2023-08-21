@@ -244,6 +244,22 @@ public class CliBankingApp{
                     screen = DASHBOARD;
                     break;
 
+                case DELETE_ACCOUNT:
+
+                    int indexToDelete = accountNumberValidation(ERROR_MSG, userDetails, "");
+                    System.out.println("Account Holder's name : " + userDetails[indexToDelete][1]);
+                    System.out.printf("Account balance : Rs %,.2f\n",userAccountBal[indexToDelete]);
+                    System.out.println();
+                    System.out.print("\tDo you Conform to delete?  (Y/n)? ");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("N")) {
+                        //continue;
+                        screen = DASHBOARD;
+                        break;
+                    }else{
+
+                    }
+                    
+
             }       
                 
         }while(true);
