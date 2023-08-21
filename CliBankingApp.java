@@ -247,18 +247,43 @@ public class CliBankingApp{
                 case DELETE_ACCOUNT:
 
                     int indexToDelete = accountNumberValidation(ERROR_MSG, userDetails, "");
-                    System.out.println("Account Holder's name : " + userDetails[indexToDelete][1]);
+                    String nameToBeDel = userDetails[indexToDelete][1];
+                    String idToBeDel = userDetails[indexToDelete][0];
+                    System.out.println("Account Holder's name : " + nameToBeDel);
                     System.out.printf("Account balance : Rs %,.2f\n",userAccountBal[indexToDelete]);
                     System.out.println();
                     System.out.print("\tDo you Conform to delete?  (Y/n)? ");
                     if (SCANNER.nextLine().strip().toUpperCase().equals("N")) {
-                        //continue;
                         screen = DASHBOARD;
                         break;
                     }else{
-
+                        String[][] newArray = new String[userDetails.length-1][];
+                        double[] newDetailsArr = new double[newArray.length];
+                        //assign values
+                        for (int i = 0; i < userDetails.length; i++) {
+                            if(indexToDelete<userDetails.length){
+                                newArray[i][0]=userDetails[i][0];
+                                newArray[i][1]=userDetails[i][1];
+                                newDetailsArr[i]=userAccountBal[i];
+                            }else if(indexToDelete==userDetails.length){
+                                continue;
+                            }else{
+                                newArray[i-1][0]=userDetails[i][0];
+                                newArray[i-1][1]=userDetails[i][1];
+                                newDetailsArr[i-1]=userAccountBal[i];
+                            }
+                        }
+                        //swap memory locations
+                        userDetails=newArray;
+                        userAccountBal=newDetailsArr;
                     }
-                    
+
+                    System.out.printf("%sAccount number : %s  , Name : %s deleted successfully!%s\n",COLOR_GREEN_BOLD,nameToBeDel,idToBeDel,RESET);
+
+                    System.out.print("\tDo you want to continue  (Y/n)? ");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;
 
             }       
                 
