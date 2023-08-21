@@ -187,6 +187,8 @@ public class CliBankingApp{
                         indexToSearchTo = accountNumberValidation(ERROR_MSG, userDetails, "To ");
                         if(indexToSearchFrom!=indexToSearchTo){
                             break;
+                        }else{
+                            System.out.printf(ERROR_MSG,"Cannot trasfer within same account!");
                         }
                     }while(true);
 
@@ -213,13 +215,13 @@ public class CliBankingApp{
 
                     }while(true);
 
-                    System.out.printf("2%s of transfer amount will be deduct from From account ","%");
+                    System.out.printf("2%s of transfer amount will be deduct from From account \n","%");
                     double x = userAccountBal[indexToSearchFrom];
                     x = (x-amount1) -(x/100*2);
-                    System.out.println("New balance of From account : " + x);
+                    System.out.printf("New balance of From account : Rs %,.f\n", x);
 
                     userAccountBal[indexToSearchTo]+=amount1;
-                    System.out.println("New balance of To account : " + (userAccountBal[indexToSearchTo]));
+                    System.out.printf("New balance of To account : Rs %,.2f\n" ,(userAccountBal[indexToSearchTo]));
 
                     System.out.print("\tDo you want to continue  (Y/n)? ");
                     if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
@@ -232,9 +234,9 @@ public class CliBankingApp{
                     indexToSearch = accountNumberValidation(ERROR_MSG, userDetails,"");
 
                     System.out.println("Account name : " + userDetails[indexToSearch][1]);
-                    System.out.println("Current Account balance : " + userAccountBal[indexToSearch]);
+                    System.out.printf("Current Account balance : RS %,.2f\n" , userAccountBal[indexToSearch]);
                     if(userAccountBal[indexToSearch]-500>500){
-                        System.out.println("Available balance for withdraw : " + (userAccountBal[indexToSearch]-500));
+                        System.out.printf("Available balance for withdraw : Rs %,.2f\n" , (userAccountBal[indexToSearch]-500));
                     }else{
                         System.out.printf(ERROR_MSG,"Withdraw can't be done from this account!");
                     }
@@ -258,17 +260,17 @@ public class CliBankingApp{
                         break;
                     }else{
                         String[][] newArray = new String[userDetails.length-1][];
-                        double[] newDetailsArr = new double[newArray.length];
+                        double[] newDetailsArr = new double[userAccountBal.length-1];
                         //assign values
                         for (int i = 0; i < userDetails.length; i++) {
-                            if(indexToDelete<userDetails.length){
+                            if(indexToDelete<i){
                                 newArray[i][0]=userDetails[i][0];
                                 newArray[i][1]=userDetails[i][1];
                                 newDetailsArr[i]=userAccountBal[i];
-                            }else if(indexToDelete==userDetails.length){
+                            }else if(indexToDelete==i){
                                 continue;
                             }else{
-                                newArray[i-1][0]=userDetails[i][0];
+                                newArray[i-1][0]=userDetails[i][0];                 // error here
                                 newArray[i-1][1]=userDetails[i][1];
                                 newDetailsArr[i-1]=userAccountBal[i];
                             }
