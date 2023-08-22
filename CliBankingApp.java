@@ -259,20 +259,20 @@ public class CliBankingApp{
                         screen = DASHBOARD;
                         break;
                     }else{
-                        String[][] newArray = new String[userDetails.length-1][];
+                        String[][] newArray = new String[userDetails.length - 1][2];
                         double[] newDetailsArr = new double[userAccountBal.length-1];
                         //assign values
                         for (int i = 0; i < userDetails.length; i++) {
-                            if(indexToDelete<i){
-                                newArray[i][0]=userDetails[i][0];
-                                newArray[i][1]=userDetails[i][1];
-                                newDetailsArr[i]=userAccountBal[i];
-                            }else if(indexToDelete==i){
+                            if (indexToDelete < i) {
+                                newArray[i][0] = userDetails[i][0];
+                                newArray[i][1] = userDetails[i][1];
+                                newDetailsArr[i] = userAccountBal[i];
+                            } else if (indexToDelete == i) {
                                 continue;
-                            }else{
-                                newArray[i-1][0]=userDetails[i][0];                 // error here
-                                newArray[i-1][1]=userDetails[i][1];
-                                newDetailsArr[i-1]=userAccountBal[i];
+                            } else {
+                                newArray[i - 1][0] = userDetails[i][0];
+                                newArray[i - 1][1] = userDetails[i][1];
+                                newDetailsArr[i - 1] = userAccountBal[i];
                             }
                         }
                         //swap memory locations
